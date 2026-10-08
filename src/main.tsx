@@ -1,14 +1,13 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-
-import "./index.css";
+import { GameContext } from "./context";
 import App from "./App.tsx";
-import { BoardContext } from "./context.tsx";
+import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BoardContext>
+    <GameContext>
       <App />
-    </BoardContext>
-  </StrictMode>,
+    </GameContext>
+  </StrictMode>
 );

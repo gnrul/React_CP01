@@ -19,5 +19,9 @@ export function GameContext({ children }: PropsWithChildren) {
   const [board, updateBoard] = useState<Board>(Array(9).fill(null));
   const [status, updateStatus] = useState<GameStatus>("x-move");
 
-  return <gameContext.Provider value={{ board, updateBoard, status, updateStatus }}>{children}</gameContext.Provider>;
+  return (
+    <gameContext.Provider value={{ board, updateBoard, status, updateStatus }}>
+      {children}
+    </gameContext.Provider>
+  );
 }

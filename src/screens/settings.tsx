@@ -1,50 +1,85 @@
-import { useRef, useEffect, type SubmitEvent } from "react";
-import type { Players } from "../types";
+import { useRef, useEffect, useContext, type FormEvent, type Dispatch, type SetStateAction } from "react";
+import { gameContext } from "../context";
+import type { AppState, Players } from "../types";
 
 type SettingsScreenProps = {
-  players: Players | null;
-  setPlayers: any;
-  updateScreen: any;
+  players: Players;
+  setPlayers: Dispatch<SetStateAction<Players>>;
+  updateAppState: Dispatch<SetStateAction<AppState>>;
 };
 
-export default function SettingsScreen({ players, setPlayers, updateScreen }: SettingsScreenProps) {
-  const inputRef = useRef<HTMLInputElement>(undefined!);
+export default function SettingsScreen({
+  players,
+  setPlayers,
+  updateAppState,
+}: SettingsScreenProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const { updateBoard, updateStatus } = useContext(gameContext);
 
   useEffect(() => {
-    inputRef.current.focus();
+    inputRef.current?.focus();
   }, []);
 
-  const handleSubmit = (event: SubmitEvent) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    event.stopPropagation();
 
-    const data = new FormData(event.target);
+    const data = new FormData(event.currentTarget);
 
-    setPlayers({
-      player1: {
-        name: data.get("namePlayer1"),
-        color: data.get("colorPlayer1"),
+    const newPlayers: Players = {
+      x: {
+        name: (data.get("nameX") as string) || "Игрок 1",
+        color: (data.get("colorX") as string) || "#3b82f6",
       },
-      player2: {
-        name: data.get("namePlayer2"),
-        color: data.get("colorPlayer2"),
+      o: {
+        name: (data.get("nameO") as string) || "Игрок 2",
+        color: (data.get("colorO") as string) || "#ef4444",
       },
-    });
+    };
 
-    updateScreen("game");
+    setPlayers(newPlayers);
+    localStorage.removeItem("xo__game");
+    updateBoard(Array(9).fill(null));
+    updateStatus("x-move");
+
+    updateAppState("game");
   };
 
   return (
-    <form action="" method="post" onSubmit={handleSubmit}>
-      <h2>Стартовый экран</h2>
+    <form onSubmit={handleSubmit}>
+      <h2>Настройки игроков</h2>
       <section>
-        <input ref={inputRef} type="text" name="namePlayer1" placeholder="Игрок 1" required />
-        <input type="color" name="colorPlayer1" />
+        <label>Крестики (X):</label>
+        <input
+          ref={inputRef}
+          type="text"
+          name="nameX"
+          placeholder="Имя игрока 1"
+          defaultValue={players.x.name}
+          required
+        />
+        <input
+          type="color"
+          name="colorX"
+          defaultValue={players.x.color}
+        />
       </section>
+
       <section>
-        <input type="text" name="namePlayer2" placeholder="Игрок 2" required />
-        <input type="color" name="colorPlayer2" />
+        <label>Нолики (O):</label>
+        <input
+          type="text"
+          name="nameO"
+          placeholder="Имя игрока 2"
+          defaultValue={players.o.name}
+          required
+        />
+        <input
+          type="color"
+          name="colorO"
+          defaultValue={players.o.color}
+        />
       </section>
+
       <button type="submit">Начать</button>
     </form>
   );

@@ -1,39 +1,30 @@
-import { useContext, type Dispatch, type SetStateAction } from "react";
-import { boardContext } from "../context";
+import Field from "../field";
+import type { Board as BoardType } from "../../types";
 import classes from "./board.module.css";
-import type { Board, Move, Index } from "../types";
 
 type BoardProps = {
-  currentMove: Move;
-  updateMove: Dispatch<SetStateAction<Move>>;
+  board: BoardType;
+  onCellClick?: (index: number) => void;
+  winningLine?: number[] | null;
+  winningColor?: string;
 };
 
-export default function Board({ currentMove, updateMove }: BoardProps) {
-  const { board, updateBoard } = useContext(boardContext);
-
-  const handleClick = (fieldIndex: Index) => {
-    updateBoard((state) => {
-      return [...state.slice(0, fieldIndex), currentMove, ...state.slice(fieldIndex + 1)];
-      // const newState = [...state]
-      // newState[fieldIndex] = currentMove
-      // return newState
-    });
-
-    updateMove((state) => (state === "o" ? "x" : "o"));
-  };
-
+export default function Board({ board, onCellClick, winningLine, winningColor }: BoardProps) {
   return (
     <main className={classes.board}>
-      {board.map((field, ix) => (
-        <button
-          key={`field-${ix}`}
-          className={classes.field}
-          onClick={() => handleClick(ix)}
-          disabled={Boolean(field)}
-        >
-          {field}
-        </button>
-      ))}
+      {board.map((cell, index) => {
+        const isWinning = winningLine?.includes(index) ?? false;
+
+        return (
+          <Field
+            key={`field-${index}`}
+            value={cell}
+            onClick={onCellClick ? () => onCellClick(index) : undefined}
+            isWinning={isWinning}
+            winningColor={winningColor}
+          />
+        );
+      })}
     </main>
   );
 }

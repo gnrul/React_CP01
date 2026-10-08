@@ -16,3 +16,8 @@ export type Players = {
   x: Player;
   o: Player;
 };
+
+export type SavedGame = {
+  move: Move;
+  board: Board
+};

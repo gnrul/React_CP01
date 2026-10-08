@@ -1,46 +1,43 @@
-import { useState } from 'react';
-
-import oIcon from '@/assets/o.svg'
-import xIcon from '@/assets/x.svg'
+import type { Players, Move } from "../types";
+import xIcon from "@/assets/x.svg";
+import oIcon from "@/assets/o.svg";
 import classes from "./legend.module.css";
 
-type PlayerNameProps = {
-    setName: (newName: string) => void,
-    name: string
-}
+type LegendProps = {
+  players: Players;
+  currentMove: Move;
+};
 
-function PlayerName({ name, setName }: PlayerNameProps) {
-    const [isEditing, setEditing] = useState(false)
+export default function Legend({ players, currentMove }: LegendProps) {
+  return (
+    <section className={classes.legend}>
+      {/* Игрок X */}
+      <section
+        className={classes.legend__item}
+        style={{
+          opacity: currentMove === "x" ? 1 : 0.4,
+          transition: "opacity 0.2s ease",
+        }}
+      >
+        <img src={xIcon} className={classes.legend__icon} alt="X" />
+        <span style={{ color: players.x.color, fontWeight: "bold" }}>
+          {players.x.name}
+        </span>
+      </section>
 
-    return <input
-        onDoubleClick={() => setEditing(true)}
-        size={1}
-        className={classes.input}
-        value={name}
-        readOnly={!isEditing}
-    />
-}
-
-export default function Legend() {
-
-    return (
-        <section className={classes.legend}>
-            {/* <section style={{ backgroundColor: players?.x.color }}>
-                {players?.x.name} (X) {currentMove === "x" && "active"}
-            </section>
-            <section style={{ backgroundColor: players?.o.color }}>
-                {players?.o.name} (O) {currentMove === "o" && "active"}
-            </section> */}
-
-            <section className={classes.legend__item}>
-                <img src={xIcon} className={classes.legend__icon} />
-                <PlayerName name="Player1" />
-            </section>
-
-            <section className={classes.legend__item}>
-                <img src={oIcon} className={classes.legend__icon} />
-                <PlayerName name="Player2" />
-            </section>
-        </section>
-    );
+      {/* Игрок O */}
+      <section
+        className={classes.legend__item}
+        style={{
+          opacity: currentMove === "o" ? 1 : 0.4,
+          transition: "opacity 0.2s ease",
+        }}
+      >
+        <img src={oIcon} className={classes.legend__icon} alt="O" />
+        <span style={{ color: players.o.color, fontWeight: "bold" }}>
+          {players.o.name}
+        </span>
+      </section>
+    </section>
+  );
 }
