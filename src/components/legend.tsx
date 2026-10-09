@@ -30,7 +30,7 @@ export default function Legend({ players, currentMove }: LegendProps) {
         className={classes.legend__item}
         style={{
           opacity: currentMove === "o" ? 1 : 0.4,
-          transition: "opacity 0.2s ease",
+          transition: "opacity 0.2s",
         }}
       >
         <img src={oIcon} className={classes.legend__icon} alt="O" />

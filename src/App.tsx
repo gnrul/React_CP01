@@ -5,7 +5,7 @@ import { SplashScreen, SettingsScreen, GameScreen, ResultsScreen } from "./scree
 import type { AppState, Board, Move, Players, SavedGame } from "./types";
 
 const WIN_COMBOS = [
-  [0, 1, 2], [3, 4, 5], [6, 7, 8], // Строки строки диагнали
+  [0, 1, 2], [3, 4, 5], [6, 7, 8], // Строки строки диаги
   [0, 3, 6], [1, 4, 7], [2, 5, 8], 
   [0, 4, 8], [2, 4, 6]             
 ];

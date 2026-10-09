@@ -53,7 +53,7 @@ export default function SettingsScreen({
           ref={inputRef}
           type="text"
           name="nameX"
-          placeholder="Имя игрока 1"
+          placeholder="Имя 1 игрока "
           defaultValue={players.x.name}
           required
         />
@@ -69,7 +69,7 @@ export default function SettingsScreen({
         <input
           type="text"
           name="nameO"
-          placeholder="Имя игрока 2"
+          placeholder="Имя 2игрока "
           defaultValue={players.o.name}
           required
         />

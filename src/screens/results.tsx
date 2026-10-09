@@ -13,7 +13,6 @@ type ResultsScreenProps = {
 export default function ResultsScreen({ players, updateAppState }: ResultsScreenProps) {
   const { board, status, updateBoard, updateStatus } = useContext(gameContext);
 
-  // Вычисляем победителя и победные ячейки
   const { line } = checkWinner(board);
 
   let resultTitle = "Ничья!";
